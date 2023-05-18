@@ -1,0 +1,27 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<h1>Lista zadań</h1>
+
+<ul>
+    {% for task in tasks %}
+        <li>
+            <h3>{{ task.title }}</h3>
+            <p>Opis: {{ task.description }}</p>
+            <p>Termin realizacji: {{ task.due_date }}</p>
+            <p>Status wykonania: {% if task.completed %}<button class="small-button" style="background-color: green">Wykonane</button>{% else %}<button class="small-button" style="background-color: red">Niewykonane</button>{% endif %} <a href="{% url 'task_toggle_completion' task.id %}" class="small-button">Zmień</a></p>
+
+            <p>Typ zadania: {{ task.get_task_type_display }}</p>
+            {% if task.task_type == 'phone' %}
+                <p>Numer telefonu: {{ task.phone }}</p>
+            {% elif task.task_type == 'email' %}
+                <p>Adres email: {{ task.email }}</p>
+            {% endif %}
+            <a href="{% url 'task_edit' task.id %}" class="small-button">Zmień</a>
+            <a href="{% url 'task_remove' task.id %}" class="small-button" style="background-color: red">Usuń</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'task_add' %}" class="button">Dodaj nowe zadanie</a>

@@ -1,0 +1,43 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<h1>Dodaj nowe zadanie</h1>
+
+<form method="post" action="{% url 'task_add' %}">
+    {% csrf_token %}
+    <label for="title">Tytuł:</label>
+    <input type="text" name="title" required><br>
+    <label for="description">Opis:</label>
+    <input type="text" name="description" required><br>
+    <label for="due_date">Termin realizacji:</label>
+    <input type="date" name="due_date" required><br>
+    <label for="task_type">Typ zadania:</label>
+    <select name="task_type" id="task_type_select">
+        <option value="regular">Zwykłe zadanie</option>
+        <option value="phone">Wykonać telefon</option>
+        <option value="email">Wysłać email</option>
+    </select><br>
+    <label for="phone">Telefon:</label>
+    <input type="text" name="phone" id="phone_input" disabled><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email_input" disabled><br>
+    <button type="submit" class="button">Dodaj zadanie</button>
+</form>
+
+<script>
+    // Get references to the select field and input fields
+    const taskTypeSelect = document.getElementById('task_type_select');
+    const phoneInput = document.getElementById('phone_input');
+    const emailInput = document.getElementById('email_input');
+
+    // Add event listener to the select field
+    taskTypeSelect.addEventListener('change', function() {
+        // Get the selected value
+        const selectedValue = taskTypeSelect.value;
+
+        // Enable/disable the corresponding input fields based on the selected value
+        phoneInput.disabled = (selectedValue !== 'phone');
+        emailInput.disabled = (selectedValue !== 'email');
+    });
+</script>
